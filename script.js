@@ -15439,12 +15439,12 @@ const showAlert = (message, duration = 1000) => {
     const alert = document.createElement("div");
     alert.textContent = message;
     alert.classList.add("alert");
-    alertContainer.prepend(alert)  // prepend method adds the newest alert to the top of the list 
+    alertContainer.prepend(alert);  // prepend method adds the newest alert to the top of the list 
     if (duration == null) return 
 
     setTimeout(() => {
         alert.classList.add("hide")
-        alert.addEventListener("transitioned", () => {
+        alert.addEventListener("transitionend", () => {
             alert.remove();
         })
     }, duration)
@@ -15458,3 +15458,33 @@ const shakeTiles = (tiles) => {
         }, { once: true }) //makes it run only once
     })
 }
+
+function checkWinLose(guess, tiles) {
+    if (guess === targetWord) {
+      showAlert("You Win", 5000)
+      danceTiles(tiles)
+      stopInteraction()
+      return
+    }
+  
+    const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
+    if (remainingTiles.length === 0) {
+      showAlert(targetWord.toUpperCase(), null)
+      stopInteraction()
+    }
+  }
+
+  function danceTiles(tiles) {
+    tiles.forEach((tile, index) => {
+      setTimeout(() => {
+        tile.classList.add("dance")
+        tile.addEventListener(
+          "animationend",
+          () => {
+            tile.classList.remove("dance")
+          },
+          { once: true }
+        )
+      }, (index * DANCE_ANIMATION_DURATION) / 5)
+    })
+  }
