@@ -1,0 +1,97 @@
+*, *::after, *::before {
+    box-sizing: border-box; /* If you set box-sizing: border-box; 
+    on an element, padding and border are included in the width 
+    and height */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Most of the sizes are based on em because em is based on font size, 
+and as the font size changes everything scales accordingly. */
+
+body {
+    background-color: hsl(240, 3%, 7%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1em;
+    font-size: clamp(.5rem, 2.5vmin, 1.5rem); /* .5 minimum 2.5vmin orta 
+    1.5 rem max size */
+}
+
+.keyboard {
+    display: grid;
+    grid-template-columns: repeat(20, minmax(auto, 1.25em)); 
+    /* We make the columns one half of each button
+    so that we can have half-button sized spaces in the middle row of the 
+    keyboard. Because of this we repeat the columns 20 times, not 10 times. */
+    grid-auto-rows: 3em; /* Buttons are 3em tall */
+    gap: .25em; /* Gap between the buttons are .25em */
+    justify-content: center; /* Keyboard is dead center */
+}
+
+.key {
+    font-size: inherit;
+    grid-column: span 2; /* We make the buttons span 2 columns with this. */
+    border: none;
+    padding: 0;
+    /* We want to make sure everything is centered so we display
+    flex and justify-content center. */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This makes sure that the text shows up 
+    in the center of the buttons. */
+
+    /* We make the colors a variable and set their 
+    default states, so that we can change them to green or give them hover 
+    states easily. */
+    background-color: hsl( 
+        var(--hue, 200)
+        var(--saturation, 1%)
+        calc(var(--lightness-offset, 0%) + var(--lightness, 51%)) 
+        /* Whatever offset we have in our lightness, add it to our current 
+        lightness, and this offset is by default 0. */
+    );
+    
+
+    color: white; /* Color of text inside the buttons */
+    fill: white; /* Makes the backspace button white */
+    text-transform: uppercase;
+    border-radius: .25em; /* Makes the buttons rounder on the edges */
+    cursor: pointer;
+    user-select: none; /* Makes sure that user can't highlight any of 
+    the text in the keyboard */
+}
+
+.key.large {
+    grid-column: span 3;
+}
+
+.key > svg { /* Making sure svgs in the keyboard are the right size. */
+    width: 1.75em;
+    height: 1.75em;
+}
+
+.key:hover, .key:focus { /* Hover -> mouse hover, focus -> typing with a real keyboard. */
+    --lightness-offset: 10%;
+}
+
+/* It is really important that we put the classes below in correct order,
+so that correct class overwrites wrong-location, and wrong-location 
+overwrites wrong class. */
+
+.key.wrong { /* Wrong letters appear black. */
+    --lightness: 23%;
+}
+
+.key.wrong-location {
+    --hue: 49;
+    --saturation: 51%;
+    --lightness: 47%;
+}
+
+.key.correct {
+    --hue: 115;
+    --saturation: 29%;
+    --lightness: 43%;
+}
