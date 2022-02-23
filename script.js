@@ -15297,14 +15297,14 @@ const keyboard = document.querySelector("[data-keyboard]");
 const alertContainer = document.querySelector("[data-alert-container]");
 const guessGrid = document.querySelector("[data-guess-grid");
 // selecting data is better than selecting classes
-const offsetFromDate = new Date(2022, 2, 23); // starting date of the game
-console.log(offsetFromDate, "offsetFromDate");
-const msOffset = Date.now() - offsetFromDate; // giving us today's date by milliseconds
-console.log(msOffset, "msOffset");
-const dayOffset = msOffset / 1000 / 60 / 60 / 24;
-console.log(dayOffset, "dayOffset");
+const offsetFromDate = new Date(2022, 0, 1)
+const msOffset = Date.now() - offsetFromDate
+const dayOffset = msOffset / 1000 / 60 / 60 / 24
 const targetWord = targetWords[Math.floor(dayOffset)]
 // floor küsüratlı rakamı tam güne yuvarlıyor
+console.log(offsetFromDate, "offsetFromDate");
+console.log(msOffset, "msOffset");
+console.log(dayOffset, "dayOffset");
 console.log(targetWord, "target word");
 
 
@@ -15423,10 +15423,10 @@ const flipTile = (tile, index, array, guess) => {
         if (index === array.length - 1) {
             tile.addEventListener("transitionend", () => {
                 startInteraction();
-                // checkWinLose(guess,array);
-            })
+                checkWinLose(guess,array);
+            }, { once: true })
         }
-    })
+    }, { once: true })
 }
 
 // We check how many active tiles are there, so if there are five of them, 
