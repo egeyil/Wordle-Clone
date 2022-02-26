@@ -15292,8 +15292,8 @@ const dictionary = [
   ]
   
 const WORD_LENGTH = 5; 
-const CHAR_LENGTH = 1;
 const FLIP_ANIMATION_DURATION = 500;
+const DANCE_ANIMATION_DURATION = 500;
 const keyboard = document.querySelector("[data-keyboard]");
 const alertContainer = document.querySelector("[data-alert-container]");
 const guessGrid = document.querySelector("[data-guess-grid");
@@ -15303,16 +15303,33 @@ const msOffset = Date.now() - offsetFromDate
 const dayOffset = msOffset / 1000 / 60 / 60 / 24
 const targetWord = targetWords[Math.floor(dayOffset)]
 // floor küsüratlı rakamı tam güne yuvarlıyor
-console.log(offsetFromDate, "offsetFromDate");
-console.log(msOffset, "msOffset");
-console.log(dayOffset, "dayOffset");
-console.log(targetWord, "target word");
 
 
-function stopInteraction() {
-    document.removeEventListener("click", handleMouseClick);
-    document.removeEventListener("keydown", handleKeyPress);
+const startInteraction = () => {
+  document.addEventListener("click", handleMouseClick);
+  document.addEventListener("keydown", handleKeyPress);
 }
+
+const stopInteraction = () => {
+  document.removeEventListener("click", handleMouseClick);
+  document.removeEventListener("keydown", handleKeyPress);
+}
+
+// var callback = function(e){
+//     if (e.target.matches("[data-key]")) { // Handling the letter keys 
+//       pressKey(e.target.dataset.key);
+//       return
+//   }
+//   if (e.target.matches("[data-enter]")) { // Handling the enter key
+//       submitGuess();
+//       return
+//   }
+
+//   if (e.target.matches("[data-delete]")) {
+//       deleteKey();
+//       return
+//   }
+// };
 
 const handleMouseClick = (e) => {
     if (e.target.matches("[data-key]")) { // Handling the letter keys 
@@ -15333,8 +15350,6 @@ const handleMouseClick = (e) => {
 // Backspace, Enter vs gibi tuşlar DOM'da varlar biz bir şey atamıyoruz
 
 const handleKeyPress = (e) => {
-  console.log(e.key);
-  console.log(e.key.length);
      if (e.key === "Enter") {
          submitGuess();
          return
@@ -15351,6 +15366,11 @@ const handleKeyPress = (e) => {
     }
 }
 
+startInteraction();  
+
+// const handleMouseClickEvent = handleMouseClick();
+// const handleKeyPressEvent = handleKeyPress();
+
 const pressKey = (key) => {
     const activeTiles = getActiveTiles()
     if (activeTiles.length >= WORD_LENGTH) return
@@ -15363,17 +15383,13 @@ const pressKey = (key) => {
     nextTile.dataset.state = "active"; //setting its state active so it has the white border color
 }
 
-const startInteraction = () => {
-    document.addEventListener("click", handleMouseClick);
-    document.addEventListener("keydown", handleKeyPress);
-}
 
-startInteraction();  
+
 
 const deleteKey = () => {
     const activeTiles = getActiveTiles();
     const lastTile = activeTiles[activeTiles.length - 1];
-    if (lastTile == null) return 
+    if (lastTile === null) return 
     lastTile.textContent = "";
     delete lastTile.dataset.state;
     delete lastTile.dataset.letter;
@@ -15464,22 +15480,24 @@ const shakeTiles = (tiles) => {
     })
 }
 
-function checkWinLose(guess, tiles) {
+
+
+const checkWinLose = (guess, tiles) => {
     if (guess === targetWord) {
       showAlert("You Win", 5000)
       danceTiles(tiles)
-      stopInteraction()
+      stopInteraction();
       return
     }
   
     const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
     if (remainingTiles.length === 0) {
       showAlert(targetWord.toUpperCase(), null)
-      stopInteraction()
+      stopInteraction();
     }
   }
 
-  function danceTiles(tiles) {
+const danceTiles = (tiles) => {
     tiles.forEach((tile, index) => {
       setTimeout(() => {
         tile.classList.add("dance")
