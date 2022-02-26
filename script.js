@@ -15353,7 +15353,6 @@ const handleKeyPress = (e) => {
 
 startInteraction();  
 
-
 const pressKey = (key) => {
     const activeTiles = getActiveTiles()
     if (activeTiles.length >= WORD_LENGTH) return
@@ -15459,6 +15458,7 @@ const shakeTiles = (tiles) => {
         }, { once: true }) //makes it run only once
     })
 }
+
 
 const checkWinLose = (guess, tiles) => {
     if (guess === targetWord) {
