@@ -15292,6 +15292,7 @@ const dictionary = [
   ]
   
 const WORD_LENGTH = 5; 
+const CHAR_LENGTH = 1;
 const FLIP_ANIMATION_DURATION = 500;
 const keyboard = document.querySelector("[data-keyboard]");
 const alertContainer = document.querySelector("[data-alert-container]");
@@ -15332,6 +15333,8 @@ const handleMouseClick = (e) => {
 // Backspace, Enter vs gibi tuşlar DOM'da varlar biz bir şey atamıyoruz
 
 const handleKeyPress = (e) => {
+  console.log(e.key);
+  console.log(e.key.length);
      if (e.key === "Enter") {
          submitGuess();
          return
@@ -15340,8 +15343,9 @@ const handleKeyPress = (e) => {
          deleteKey();
          return
      }
+     
 
-     if (e.key.match(/[a-z]/)) {// any character between a and z will work
+     if (e.key.match(/[a-z]/) && e.key.length === 1 ) {// any character between a and z will work
         pressKey(e.key);
         return
     }
@@ -15393,6 +15397,7 @@ const submitGuess = () => {
     if (!dictionary.includes(guess)) {
         showAlert("Not a word");
         shakeTiles(activeTiles);
+        return
     }
 
     stopInteraction();
