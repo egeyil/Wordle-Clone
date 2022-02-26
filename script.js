@@ -15297,12 +15297,18 @@ const DANCE_ANIMATION_DURATION = 500;
 const keyboard = document.querySelector("[data-keyboard]");
 const alertContainer = document.querySelector("[data-alert-container]");
 const guessGrid = document.querySelector("[data-guess-grid");
+
 // selecting data is better than selecting classes
 const offsetFromDate = new Date(2022, 0, 1)
 const msOffset = Date.now() - offsetFromDate
 const dayOffset = msOffset / 1000 / 60 / 60 / 24
 const targetWord = targetWords[Math.floor(dayOffset)]
 // floor küsüratlı rakamı tam güne yuvarlıyor
+
+const deleteKeyButton = document.querySelector("[data-delete"); 
+const letterButton = document.querySelector("[data-key]");
+const enterButton = document.querySelector("[data-enter]");
+
 
 
 const startInteraction = () => {
@@ -15319,17 +15325,23 @@ const stopInteraction = () => {
 const handleMouseClick = (e) => {
     if (e.target.matches("[data-key]")) { // Handling the letter keys 
         pressKey(e.target.dataset.key);
-        return
-    }
-    if (e.target.matches("[data-enter]")) { // Handling the enter key
-        submitGuess();
-        return
+        console.log("letterPress");
     }
 
-    if (e.target.matches("[data-delete]")) {
-        deleteKey();
-        return
+    else if (e.target.matches("[data-enter]")) { // Handling the enter key
+        submitGuess();
+        console.log("enterPress");
     }
+
+    else if (e.target.matches("[data-delete]")) {
+        console.log("deletePress");
+        deleteKey();
+    }
+
+    console.log(e);
+    enterButton.blur();
+    letterButton.blur();
+    return
 }
 
 // Backspace, Enter vs gibi tuşlar DOM'da varlar biz bir şey atamıyoruz
@@ -15367,11 +15379,16 @@ const pressKey = (key) => {
 
 const deleteKey = () => {
     const activeTiles = getActiveTiles();
-    const lastTile = activeTiles[activeTiles.length - 1];
-    if (lastTile === null) return 
-    lastTile.textContent = "";
-    delete lastTile.dataset.state;
-    delete lastTile.dataset.letter;
+    if (activeTiles.length > 0) {
+      const lastTile = activeTiles[activeTiles.length - 1];
+      lastTile.textContent = "";
+      delete lastTile.dataset.state;
+      delete lastTile.dataset.letter;
+    }
+
+    deleteKeyButton.blur();
+    return
+    
 }
 
 const submitGuess = () => {

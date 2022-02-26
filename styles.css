@@ -238,3 +238,7 @@ and active (typed but not submitted) .*/
 .alert.hide {
     opacity: 0;
 }
+
+svg, path {
+    pointer-events: none;
+}
